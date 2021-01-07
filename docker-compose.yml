@@ -16,7 +16,6 @@ services:
     restart: always
 
 volumes:
-  es-logs-one: {}
   esdata-one:
     driver: local
     driver_opts:
