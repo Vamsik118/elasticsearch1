@@ -1,0 +1,19 @@
+cluster.name: testindex
+node.name: test-es-one
+network.host: 0.0.0.0
+network.publish_host: _ec2_
+discovery.zen.hosts_provider: ec2
+discovery.ec2.any_group: true
+discovery.ec2.host_type: private_ip
+cloud.node.auto_attributes: true
+cluster.routing.allocation.awareness.attributes: aws_availability_zone
+discovery.ec2.tag.es_cluster: testindex-cluster
+discovery.ec2.endpoint: ec2.us-east-1.amazonaws.com
+node.master: true
+discovery.zen.minimum_master_nodes: 3
+plugin.mandatory: discovery-ec2
+discovery.ec2.groups: sg-dc2ed1a0,sg-971be4eb,sg-057b58d3b8e163050,sg-01a5aa9ae0fe1ccbb
+http.port: 9200
+search.max_buckets: 1000
+indices.breaker.request.limit: 40%
+# logger.org.elasticsearch.discovery.ec2: TRACE
