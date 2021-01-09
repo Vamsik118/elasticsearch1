@@ -12,8 +12,5 @@ discovery.ec2.endpoint: ec2.us-east-1.amazonaws.com
 node.master: true
 discovery.zen.minimum_master_nodes: 3
 plugin.mandatory: discovery-ec2
-discovery.ec2.groups: sg-dc2ed1a0,sg-971be4eb,sg-057b58d3b8e163050,sg-01a5aa9ae0fe1ccbb
+discovery.ec2.groups: 
 http.port: 9200
-search.max_buckets: 1000
-indices.breaker.request.limit: 40%
-# logger.org.elasticsearch.discovery.ec2: TRACE
