@@ -14,6 +14,13 @@ services:
       - 9200:9200
       - 9300:9300
     restart: always
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.8.13
+    environment:
+      server.port: 5601
+      server.host: "0.0.0.0"
+      elasticsearch.url: "http://elasticsearch-one:9200"
+    ports: ['5601:5601']
 
 volumes:
   esdata-one:
