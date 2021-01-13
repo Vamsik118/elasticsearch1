@@ -30,5 +30,4 @@ swapoff -a
 ulimit -n 65535
 sysctl -w net.ipv4.tcp_retries2=5
 mkdir -p /var/enc/db/elasticsearch1/data
-cd elasticsearch1
 docker-compose up -d
