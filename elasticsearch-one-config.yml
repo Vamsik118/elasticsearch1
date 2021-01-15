@@ -12,5 +12,5 @@ discovery.ec2.endpoint: ec2.us-east-1.amazonaws.com
 node.master: true
 discovery.zen.minimum_master_nodes: 3
 plugin.mandatory: discovery-ec2
-discovery.ec2.groups: sg-0cae955785d0c5ed2 
+discovery.ec2.groups:  
 http.port: 9200
