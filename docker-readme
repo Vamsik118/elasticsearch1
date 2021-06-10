@@ -1,4 +1,14 @@
-docker container run -d --name portainer -p 8080:9000 \
---restart=always \
--v /var/run/docker.sock:/var/run/docker.sock \
--v portainer_data:/data portainer/portainer
+version: '3'
+services:
+  web:
+    image: nginx
+    ports:
+    - "8080:80"
+    volumes:
+    - nginx_html:/usr/share/nginx/html/
+    links:
+    - redis
+  redis:
+    image: redis
+volumes:
+  nginx_html: {}
