@@ -1,14 +1,11 @@
 version: '3'
 services:
-  web:
-    image: nginx
+  weather-app:
+    build:
+      context: .
+      args:
+        - VERSION=v2.0
     ports:
-    - "8080:80"
-    volumes:
-    - nginx_html:/usr/share/nginx/html/
-    links:
-    - redis
-  redis:
-    image: redis
-volumes:
-  nginx_html: {}
+      - "8081:3000"
+    environment:
+      - NODE_ENV=production
