@@ -1,38 +1,27 @@
-version: '3'
-services:
-  ghost:
-    container_name: ghost
-    image: ghost:latest
-    ports:
-      - "80:2368"
-    environment:
-      - database__client=mysql
-      - database__connection__host=mysql
-      - database__connection__user=root
-      - database__connection__password=P4SSw0rd0!
-      - database__connection__database=ghost
-    volumes:
-      - ghost-volume:/var/lib/ghost
-    networks:
-      - ghost_network
-      - mysql_network
-    depends_on:
-      - mysql
+global:
+  scrape_interval: 15s
+  scrape_timeout: 15s
+  evaluation_interval: 15s
 
-  mysql:
-    container_name: mysql
-    image: mysql:5.7
-    environment:
-      - MYSQL_ROOT_PASSWORD=P4SSw0rd0!
-    volumes:
-      - mysql-volume:/var/lib/mysql
-    networks:
-      - mysql_network
+scrape_configs:
+  - job_name: prometheus
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - prometheus_main:9090
 
-volumes:
-  ghost-volume:
-  mysql-volume:
+  - job_name: nodes
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - [MANAGER]:9100
+      - [WORKER1]:9100
+      - [WORKER2]:9100
 
-networks:
-  ghost_network:
-  mysql_network:
+  - job_name: cadvisor
+    scrape_interval: 5s
+    static_configs:
+    - targets:
+      - [MANAGER]:8081
+      - [WORKER1]:8081
+      - [WORKER2]:8081
