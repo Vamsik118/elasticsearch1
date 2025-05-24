@@ -1,15 +1,17 @@
 cluster.name: testindex
 node.name: test-es-one
 network.host: 0.0.0.0
-network.publish_host: _ec2_
-discovery.zen.hosts_provider: ec2
-discovery.ec2.any_group: false
-discovery.ec2.host_type: private_ip
+# The following settings are for AWS EC2 discovery.
+# Uncomment and configure them if deploying to AWS.
+# network.publish_host: _ec2_
+# discovery.zen.hosts_provider: ec2
+# discovery.ec2.any_group: false
+# discovery.ec2.host_type: private_ip
 cloud.node.auto_attributes: true
 cluster.routing.allocation.awareness.attributes: aws_availability_zone
-discovery.ec2.tag.es_cluster: testindex-cluster
-discovery.ec2.endpoint: ec2.us-east-1.amazonaws.com
+# discovery.ec2.tag.es_cluster: testindex-cluster
+# discovery.ec2.endpoint: ec2.us-east-1.amazonaws.com
 node.master: true
-discovery.zen.minimum_master_nodes: 3
-plugin.mandatory: discovery-ec2
+discovery.zen.minimum_master_nodes: 1
+# plugin.mandatory: discovery-ec2
 http.port: 9200
