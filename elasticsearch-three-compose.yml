@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+  elasticsearch-three:
+    container_name: elasticsearch-three
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.13
+    user: elasticsearch
+    command: ["sh", "-c", "bin/elasticsearch-plugin list | grep -q discovery-ec2 || bin/elasticsearch-plugin install discovery-ec2 --batch && ./bin/elasticsearch"]
+    environment:
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - node.name=test-es-three
+      - cluster.initial_master_nodes=test-es-one,test-es-two,test-es-three
+    volumes:
+      - esdata-three:/usr/share/elasticsearch/data
+      - ./elasticsearch-one-config.yml:/usr/share/elasticsearch/config/elasticsearch.yml # Shared config
+      - es-logs-three:/usr/share/elasticsearch/logs
+      - ./log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties # Shared log config
+    ports:
+      - 9200:9200 # Host port for ES node three (assumes this compose runs on a dedicated host)
+      - 9300:9300 # Host transport port for ES node three
+    restart: always
+
+volumes:
+  es-logs-three: {}
+  esdata-three:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /var/enc/db/elasticsearch3/data

@@ -7,21 +7,36 @@ services:
     command: ["sh", "-c", "bin/elasticsearch-plugin list | grep -q discovery-ec2 || bin/elasticsearch-plugin install discovery-ec2 --batch && ./bin/elasticsearch"]
     environment:
       - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - node.name=test-es-one
+      # For EC2 discovery, cluster.initial_master_nodes is less critical for ES 6.8 
+      # as discovery.zen.ping.unicast.hosts (from EC2 plugin) and minimum_master_nodes handle it.
+      # However, it doesn't hurt to have it for potential version nuances.
+      - cluster.initial_master_nodes=test-es-one,test-es-two,test-es-three
     volumes:
       - esdata-one:/usr/share/elasticsearch/data
       - ./elasticsearch-one-config.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - es-logs-one:/usr/share/elasticsearch/logs
       - ./log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
     ports:
-      - 9200:9200
-      - 9300:9300
+      - 9200:9200 # Host port for ES node one
+      - 9300:9300 # Host transport port for ES node one
     restart: always
+
   kibana:
     image: docker.elastic.co/kibana/kibana:6.8.13
+    container_name: kibana
     volumes:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
-    container_name: kibana
-    ports: ['5601:5601']
+    ports:
+      - '5601:5601' # Host port for Kibana
+    environment:
+      # Points to the local ES node in this compose file.
+      # User will need to update this in Kibana settings or via env var 
+      # if they want Kibana to connect to all ES nodes by their cloud IPs.
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch-one:9200"]'
+    depends_on:
+      - elasticsearch-one
+    restart: always
 
 volumes:
   es-logs-one: {}
